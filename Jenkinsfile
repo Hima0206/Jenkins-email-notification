@@ -1,4 +1,4 @@
-@Library('jenkins-shared-library') _
+@Library('Jenkins-shared-library') _
 pipeline {
     agent any
 
@@ -17,7 +17,7 @@ pipeline {
     post {
         always {
             script {
-                emailNotification("Himateja0206@gmail.com")
+                notify("Himateja0206@gmail.com")
             }
         }
     }
