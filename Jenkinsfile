@@ -8,6 +8,13 @@ pipeline {
                 sh "echo 'Checkout Completed'"
             }
         }
+        stage('Gitleaks scan') {
+            steps {
+                sh '''
+                docker run --rm -v "$(pwd)":/repo zricethezav/gitleaks:latest detect --source=/repo --report-format=json --report-path=gitleaks-report.json
+                '''
+            }
+        }
         stage('Build') {
             steps {
                 sh "echo 'Build Completed'"
