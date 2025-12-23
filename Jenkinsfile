@@ -13,6 +13,7 @@ pipeline {
                 sh '''
                 docker run --rm -v "$(pwd)":/repo zricethezav/gitleaks:latest detect --no-git --source=/repo --report-format=json --report-path=/repo/gitleaks-report.json --exit-code=1
                 '''
+                sh 'touch gitleaks-report.json'
             }
         }
         stage('Build') {
