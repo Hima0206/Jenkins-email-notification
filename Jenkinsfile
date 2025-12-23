@@ -11,7 +11,7 @@ pipeline {
         stage('Gitleaks scan') {
             steps {
                 sh '''
-                docker run --rm -v "$(pwd)":/repo zricethezav/gitleaks:latest detect --no-git --source=/repo --report-format=json --report-path=gitleaks-report.json --exit-code=1
+                docker run --rm -v "$(pwd)":/repo zricethezav/gitleaks:latest detect --no-git --source=/repo --report-format=json --report-path=/repo/gitleaks-report.json --exit-code=1
                 '''
             }
         }
