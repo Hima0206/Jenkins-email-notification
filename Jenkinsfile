@@ -28,20 +28,24 @@ pipeline {
         always {
             emailext(
                 subject: "Pipeline status: ${currentBuild.currentResult}",
-                body: '''<html>
+                body: """<html>
                         <body>
-                            <h3>Jenkins Build Notification</h3>
-                            <p>Project: ${env.JOB_NAME}</p>
-                            <p>Build Number: ${env.BUILD_NUMBER}</p>
-                            <p>Build URL: ${env.BUILD_URL}</p>
-                            <p>Branch Name: ${env.GIT_BRANCH}</p>
-                            <p>Status: ${currentBuild.currentResult}</p>
-                            <p>Triggered by: ${currentBuild.getBuildCauses()[0].shortDescription}</p>
-                            <p>Duration: ${currentBuild.durationString}</p>
-                            <p>Commit hash: ${env.GIT_COMMIT}</p>
-                            <p>Check console output at: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                            <h3 style="color:blue;">Jenkins Build Notification</h3>
+                            <p><b>Project:</b> ${env.JOB_NAME}</p>
+                            <p><b>Build Number:</b> ${env.BUILD_NUMBER}</p>
+                            <p><b>Build URL:</b> ${env.BUILD_URL}</p>
+                            <p><b>Branch Name:</b> ${env.GIT_BRANCH}</p>
+                            <p><b style="color:${currentBuild.currentResult == 'SUCCESS' ? 'green' : 'red'};">
+                                Status: ${currentBuild.currentResult}
+                            </b></p>
+                            <p><b>Triggered by:</b> ${currentBuild.getBuildCauses()[0].shortDescription}</p>
+                            <p><b>Duration:</b> ${currentBuild.durationString}</p>
+                            <p><b>Commit hash:</b> ${env.GIT_COMMIT}</p>
+                            <p>Check console output at: 
+                                <a href="${env.BUILD_URL}">${env.BUILD_URL}</a>
+                            </p>
                         </body>
-                        </html>''',
+                        </html>""",
                 to: 'Himateja0206@gmail.com',
                 mimeType: 'text/html'
             )
