@@ -34,14 +34,17 @@ pipeline {
                             <h2>Jenkins Build Notification</h2>
                         </div>
                         <table border="1" cellspacing="0" cellpadding="5" style="border-collapse:collapse; width:100%;">
-                        <tr><th align="left">Status</th><td style="color:${(currentBuild.currentResult == 'SUCCESS') ? 'green' : 'red'}">${currentBuild.currentResult}</td></tr>
-                        <tr><th align="left">Build Job</th><td>${env.JOB_NAME}</td></tr>
-                        <tr><th align="left">Build Number</th><td>${env.BUILD_NUMBER}</td></tr>
-                        <tr><th align="left">Build URL</th><td><a href="${env.BUILD_URL}">${env.BUILD_URL}</a></td></tr>
-                        <tr><th align="left">Branch Name</th><td>${env.GIT_BRANCH}</td></tr>
-                        <tr><th align="left">Triggered by</th><td>${currentBuild.getBuildCauses()[0].shortDescription}</td></tr>
-                        <tr><th align="left">Duration</th><td>${currentBuild.durationString}</td></tr>
-                        <tr><th align="left">Commit hash</th><td>${env.GIT_COMMIT}</td></tr>
+                          <thead><tr><th>Name</th><th>Value</th></tr></thead>
+                          <tbody>
+                            <tr><th align="left">Status</th><td style="color:${(currentBuild.currentResult == 'SUCCESS') ? 'green' : 'red'}">${currentBuild.currentResult}</td></tr>
+                            <tr><th align="left">Build Job</th><td>${env.JOB_NAME}</td></tr>
+                            <tr><th align="left">Build Number</th><td>${env.BUILD_NUMBER}</td></tr>
+                            <tr><th align="left">Build URL</th><td><a href="${env.BUILD_URL}">${env.BUILD_URL}</a></td></tr>
+                            <tr><th align="left">Branch Name</th><td>${env.GIT_BRANCH}</td></tr>
+                            <tr><th align="left">Triggered by</th><td>${currentBuild.getBuildCauses()[0].shortDescription}</td></tr>
+                            <tr><th align="left">Duration</th><td>${currentBuild.durationString}</td></tr>
+                            <tr><th align="left">Commit hash</th><td>${env.GIT_COMMIT}</td></tr>
+                          </tbody>
                         </table>
                         </body>
                         </html>""",
