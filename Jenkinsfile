@@ -31,12 +31,11 @@ pipeline {
                 body: """<html>
                         <body>
                         <div style="background-color:#4CAF50; color:white; padding:10px; text-align:center;">
-                            <h2> Jenkins Build Notification</h2>
+                            <h2>Jenkins Build Notification</h2>
                         </div>
 
-                        <p>Status: <b style="color:${currentBuild.currentResult == 'SUCCESS' ? 'green' : 'red'}">
-                            ${currentBuild.currentResult}
-                        </b></p>
+                        <p><b>Status</b>: <b style="color:${(currentBuild.currentResult == 'SUCCESS') ? 'green' : 'red'}">
+                            ${currentBuild.currentResult}</b></p>
                         <p><b>Build Job:</b> ${env.JOB_NAME}</p>
                         <p><b>Build Number:</b> ${env.BUILD_NUMBER}</p>
                         <p><b>Build URL:</b> ${env.BUILD_URL}</p>
