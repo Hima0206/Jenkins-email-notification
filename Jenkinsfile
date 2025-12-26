@@ -31,10 +31,10 @@ pipeline {
                 def buildNumber = env.BUILD_NUMBER
                 def buildStatus = currentBuild.currentResult
                 def buildUrl = env.BUILD_URL
-
-                def triggeredBy = currentBuild
-                    .getBuildCauses('hudson.model.Cause$UserIdCause')[0]
-                    ?.getUserName() ?: 'N/A'
+                def causes = currentBuild.getBuildCauses()
+                def triggeredBy = (causes && causes.size() > 0)
+                    ? (causes[0].userName ?: causes[0].shortDescription)
+                    : 'N/A'
 
                 def buildDuration = currentBuild.durationString.replace(' and counting', '')
                 def branchName = env.GIT_BRANCH ?: 'N/A'
