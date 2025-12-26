@@ -26,51 +26,28 @@ pipeline {
 
     post {
         always {
-            script {
-                def jobName = env.JOB_NAME
-                def buildNumber = env.BUILD_NUMBER
-                def buildStatus = currentBuild.currentResult
-                def buildUrl = env.BUILD_URL
-                def causes = currentBuild.getBuildCauses()
-                def triggeredBy = (causes && causes.size() > 0)
-                    ? (causes[0].userName ?: causes[0].shortDescription)
-                    : 'N/A'
+            emailext(
+                subject: "Pipeline status: ${currentBuild.currentResult}",
+                body: '''<html>
+                        <body>
+                            <h3>Jenkins Build Notification</h3>
+                            <p>Project: ${env.JOB_NAME}</p>
+                            <p>Build Number: ${env.BUILD_NUMBER}</p>
+                            <p>Build URL: ${env.BUILD_URL}</p>
+                            <p>Branch Name: ${env.GIT_BRANCH}</p>
+                            <p>Status: ${currentBuild.currentResult}</p>
+                            <p>Triggered by: ${currentBuild.getBuildCauses()[0].shortDescription}</p>
+                            <p>Duration: ${currentBuild.durationString}</p>
+                            <p>Commit hash: ${env.GIT_COMMIT}</p>
+                            <p>Check console output at: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                        </body>
+                        </html>''',
+                to: 'Himateja0206@gmail.com',
+                mimeType: 'text/html'
+            )
+        }
 
-                def buildDuration = currentBuild.durationString.replace(' and counting', '')
-                def branchName = env.GIT_BRANCH ?: 'N/A'
-
-                def lastCommitHash = sh(
-                    script: "git rev-parse HEAD || echo N/A",
-                    returnStdout: true
-                ).trim()
-
-                def bannerColor =
-                    buildStatus.toUpperCase() == 'SUCCESS' ? 'green' :
-                    buildStatus.toUpperCase() == 'FAILURE' ? 'red' : 'orange'
-
-                def bodyContent = """
-                <h2 style="color:${bannerColor};">Build Status: ${buildStatus}</h2>
-                <ul>
-                    <li><strong>Job Name:</strong> ${jobName}</li>
-                    <li><strong>Build Number:</strong> ${buildNumber}</li>
-                    <li><strong>Branch Name:</strong> ${branchName}</li>
-                    <li><strong>Last Commit Hash:</strong> ${lastCommitHash}</li>
-                    <li><strong>Triggered By:</strong> ${triggeredBy}</li>
-                    <li><strong>Build Duration:</strong> ${buildDuration}</li>
-                    <li><strong>Build URL:</strong>
-                        <a href="${buildUrl}">${buildUrl}</a>
-                    </li>
-                </ul>
-                """
-
-                emailext(
-                    subject: "Build Notification: ${jobName} #${buildNumber} - ${buildStatus}",
-                    body: bodyContent,
-                    to: 'himateja0206@gmail.com',
-                    mimeType: 'text/html'
-                )
-            }
-
+        cleanup {
             cleanWs()
         }
     }
